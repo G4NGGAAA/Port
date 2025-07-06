@@ -13,5 +13,3 @@
 
 ---
 
-## 📁 Struktur Folder
-
