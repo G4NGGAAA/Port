@@ -43,6 +43,99 @@ body {
     overflow-x: hidden;
 }
 
+/* Welcome Screen */
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 2000;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.welcome-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-circle {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.logo-circle::after {
+    content: '';
+    position: absolute;
+    width: 85%;
+    height: 85%;
+    background: var(--background-color);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.logo-circle span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(var(--primary-color), #6c5ce7);
+    border-radius: 50%;
+    animation: rotate 8s linear infinite;
+}
+
+.logo-circle span:nth-child(1) {
+    filter: blur(15px);
+}
+
+.logo-image {
+    position: relative;
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.logo-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.welcome-text {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards 0.5s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-screen.hide {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+}
+
 /* Header Styles */
 .header {
     position: fixed;
@@ -56,6 +149,14 @@ body {
     align-items: center;
     z-index: 1000;
     box-shadow: 0 2px 15px var(--shadow-color);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.header.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .header.sticky {
@@ -137,6 +238,14 @@ body {
     min-height: 100vh;
     padding: 10rem 9% 2rem;
     position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.home.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .home-content {
@@ -237,6 +346,7 @@ body {
     position: relative;
     width: 45vw;
     animation: floatImage 4s ease-in-out infinite;
+    transition: all 1s ease;
 }
 
 @keyframes floatImage {
@@ -429,6 +539,7 @@ body {
     box-shadow: 0 0 2rem var(--shadow-color);
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     transition: transform 0.5s ease;
 }
 
@@ -453,7 +564,7 @@ body {
     transform: scale(1.1);
 }
 
-.project-layer {
+.project-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -470,20 +581,25 @@ body {
     transition: .5s ease;
 }
 
-.project-card:hover .project-layer {
+.project-card:hover .project-overlay {
     transform: translateY(0);
 }
 
-.project-layer h4 {
+.project-overlay h3 {
     font-size: 2.5rem;
     color: #fff;
     margin-bottom: 1rem;
 }
 
-.project-layer p {
+.project-overlay p {
     font-size: 1.6rem;
     color: #fff;
     margin-bottom: 2rem;
+}
+
+.project-content {
+    padding: 2rem;
+    background: var(--card-bg);
 }
 
 .project-tech {
@@ -491,12 +607,13 @@ body {
     justify-content: center;
     gap: 1rem;
     margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
 .project-tech span {
     font-size: 1.2rem;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    background: rgba(74, 107, 255, 0.1);
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
 }
@@ -504,6 +621,7 @@ body {
 .project-buttons {
     display: flex;
     gap: 1.5rem;
+    justify-content: center;
 }
 
 .swiper-pagination-bullet {
@@ -714,6 +832,11 @@ body {
     .contact form .input-box input {
         width: 100%;
     }
+    
+    .logo-circle {
+        width: 150px;
+        height: 150px;
+    }
 }
 
 @media (max-width: 617px) {
@@ -723,6 +846,15 @@ body {
     
     .project-buttons {
         flex-direction: column;
+    }
+    
+    .welcome-text {
+        font-size: 2rem;
+    }
+    
+    .logo-circle {
+        width: 120px;
+        height: 120px;
     }
 }
 
@@ -750,6 +882,15 @@ body {
     
     .footer-text {
         text-align: center;
+    }
+    
+    .welcome-text {
+        font-size: 1.6rem;
+    }
+    
+    .logo-circle {
+        width: 100px;
+        height: 100px;
     }
 }
 
