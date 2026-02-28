@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // ===== PERBAIKAN: Active link on scroll dengan animasi garis yang menyesuaikan =====
+    // Active link on scroll dengan animasi garis yang menyesuaikan
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.navbar a');
     
@@ -196,6 +196,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Newsletter Form Submission
+    const newsletterForm = document.querySelector('.footer-newsletter');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = newsletterForm.querySelector('input[type="email"]').value;
+            
+            // Validasi email sederhana
+            if (email && email.includes('@') && email.includes('.')) {
+                // Tampilkan pesan sukses
+                alert('Thank you for subscribing to our newsletter!');
+                newsletterForm.reset();
+                
+                // Di sini Anda bisa menambahkan kode untuk mengirim email ke server
+                // Contoh: fetch('/api/subscribe', { method: 'POST', body: JSON.stringify({ email }) })
+            } else {
+                alert('Please enter a valid email address!');
+            }
+        });
+    }
     
     // Scroll Reveal Animation
     ScrollReveal({
