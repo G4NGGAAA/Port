@@ -114,14 +114,87 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Active link on scroll
+    // ===== PERBAIKAN: Active link on scroll dengan animasi garis yang menyesuaikan =====
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.navbar a');
+    
+    function updateActiveLink() {
+        let current = '';
+        const scrollPosition = window.scrollY;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150; // Offset untuk trigger lebih awal
+            const sectionBottom = sectionTop + section.offsetHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        // Jika di paling atas, aktifkan home
+        if (scrollPosition < 100) {
+            current = 'home';
+        }
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href').substring(1); // Hapus # dari href
+            
+            if (href === current) {
+                link.classList.add('active');
+                
+                // Animasi tambahan: efek pulse saat berganti
+                link.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    link.style.transform = 'scale(1)';
+                }, 200);
+            }
+        });
+    }
+    
+    // Panggil fungsi saat scroll
     window.addEventListener('scroll', () => {
         const header = document.querySelector('header');
         header.classList.toggle('sticky', window.scrollY > 100);
         
-        // Close mobile menu on scroll
-        menuIcon.classList.remove('bx-x');
-        navbar.classList.remove('active');
+        // Close mobile menu on scroll (untuk mobile)
+        if (window.innerWidth <= 768) {
+            menuIcon.classList.remove('bx-x');
+            navbar.classList.remove('active');
+        }
+        
+        // Update active link
+        updateActiveLink();
+    });
+    
+    // Panggil sekali saat halaman dimuat
+    window.addEventListener('load', updateActiveLink);
+    
+    // Update juga saat resize (untuk mengatasi perubahan offset)
+    window.addEventListener('resize', updateActiveLink);
+    
+    // Smooth scroll dengan update active link
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = targetSection.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Update active link setelah klik
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
     });
     
     // Scroll Reveal Animation
